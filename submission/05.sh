@@ -1,2 +1,2 @@
 # Check the total amount in the wallet.
-bitcoin-cli.exe -rpcwallet=builderswallet getbalance
+bitcoin-cli -rpcwallet=builderswallet getbalance
