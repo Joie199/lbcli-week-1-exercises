@@ -22,13 +22,13 @@ echo "----------------------------------------"
 echo "Create a wallet named 'btrustwallet' to track your Bitcoin exploration"
 # STUDENT TASK: Use bitcoin-cli to create a wallet named "btrustwallet"
 # WRITE YOUR SOLUTION BELOW:
-$(bitcoin-cli.exe -regtest createwallet "btrustwallet")
+bitcoin-cli.exe -regtest createwallet "btrustwallet"
 
 # Create a second wallet that will hold the treasure
 echo "Now, create another wallet called 'treasurewallet' to fund your adventure"
 # STUDENT TASK: Create another wallet called "treasurewallet"
 # WRITE YOUR SOLUTION BELOW:
-$(bitcoin-cli.exe -regtest createwallet "treasurewallet")
+bitcoin-cli.exe -regtest createwallet "treasurewallet"
 
 # Generate an address for mining in the treasure wallet
 # STUDENT TASK: Generate a new address in the treasurewallet
@@ -132,7 +132,7 @@ echo "Verify the signature to reveal the hidden message!"
 
 # This part is done for you - creating a signed message
 SECRET_MESSAGE="You've successfully completed the Bitcoin treasure hunt!"
-SIGNATURE=$(bitcoin-cli -regtest -rpcwallet=btrustwallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE")
+SIGNATURE=$(bitcoin-cli.exe -regtest -rpcwallet=treasurewallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE")
 check_cmd "Message signing"
 echo "Address: $LEGACY_ADDR"
 echo "Signature: $SIGNATURE"
