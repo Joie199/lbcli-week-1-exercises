@@ -1,2 +1,2 @@
 # Write the bitcoin cli command to get the bitcoin node network name
-bitcoin-cli.exe -regtest getblockchaininfo
+bitcoin-cli.exe -regtest getblockchaininfo | jq -r '.chain'
