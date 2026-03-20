@@ -1,4 +1,4 @@
 # Check the total amount in the wallet.
-getadd=$(bitcoin-cli -regtest -rpcwallet=builderswallet getnewaddress)
-bitcoin-cli -regtest -rpcwallet=builderswallet generatetoaddress 101 "$getadd"
+gadd=$(bitcoin-cli -regtest -rpcwallet=builderswallet getnewaddress) 
+bitcoin-cli -regtest generatetoaddress 101 "$gadd"
 bitcoin-cli -regtest -rpcwallet=builderswallet getbalance
