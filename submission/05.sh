@@ -1,2 +1,2 @@
 # Check the total amount in the wallet.
-bitcoin-cli -regtest getbalance "" 0
+bitcoin-cli -regtest getbalance "*"
