@@ -226,7 +226,7 @@ else
 fi
 
 # CHALLENGE COMPLETE
-echo ""
+echo "" 
 echo "TREASURE HUNT COMPLETE!"
 echo "======================="
 show_wallet_info "btrustwallet"
