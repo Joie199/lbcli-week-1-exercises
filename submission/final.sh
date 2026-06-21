@@ -28,12 +28,12 @@ echo "Create a wallet named 'btrustwallet' to track your Bitcoin exploration"
 echo "Now, create another wallet called 'treasurewallet' to fund your adventure"
 # STUDENT TASK: Create another wallet called "treasurewallet"
 # WRITE YOUR SOLUTION BELOW:
-
+bitcoin-cli.exe -regtest createwallet treasurewallet
 
 # Generate an address for mining in the treasure wallet
 # STUDENT TASK: Generate a new address in the treasurewallet
 # WRITE YOUR SOLUTION BELOW:
-TREASURE_ADDR=
+TREASURE_ADDR= bitcoin-cli.exe -regtest -rpcwallet=treasurewallet getnewaddress ""
 check_cmd "Address generation"
 echo "Mining to address: $TREASURE_ADDR"
 
@@ -47,7 +47,7 @@ echo "-----------------------------------------"
 echo "Check your wallet balance to see what resources you have to start"
 # STUDENT TASK: Get the balance of btrustwallet
 # WRITE YOUR SOLUTION BELOW:
-BALANCE=
+BALANCE= bitcoin-cli.exe -regtest -rpcwallet=btrustwallet getbalance ""
 check_cmd "Balance check"
 echo "Your starting balance: $BALANCE BTC"
 
@@ -59,16 +59,16 @@ echo "The treasure hunt requires 4 different types of addresses to collect funds
 echo "Generate one of each address type (legacy, p2sh-segwit, bech32, bech32m)"
 # STUDENT TASK: Generate addresses of each type
 # WRITE YOUR SOLUTION BELOW:
-LEGACY_ADDR=
+LEGACY_ADDR=bitcoin-cli.exe -regtest getnewaddress "" legacy
 check_cmd "Legacy address generation"
 
-P2SH_ADDR=
+P2SH_ADDR=bitcoin-cli.exe -regtest getnewaddress "" p2sh-segwit
 check_cmd "P2SH address generation"
 
-SEGWIT_ADDR=
+SEGWIT_ADDR=bitcoin-cli.exe -regtest getnewaddress "" bech32
 check_cmd "SegWit address generation"
 
-TAPROOT_ADDR=
+TAPROOT_ADDR=bitcoin-cli.exe -regtest getnewaddress "" bech32m
 check_cmd "Taproot address generation"
 
 echo "Your exploration addresses:"
@@ -97,11 +97,11 @@ echo "-------------------------------"
 echo "Treasures have been sent to your addresses. Check how much you've collected!"
 # STUDENT TASK: Check wallet balance after receiving funds and calculate how much treasure was collected
 # WRITE YOUR SOLUTION BELOW:
-NEW_BALANCE=
+NEW_BALANCE= bitcoin-cli.exe -regtest -rpcwallet=treasurewallet getbalance ""
 check_cmd "New balance check"
 echo "Your treasure balance: $NEW_BALANCE BTC"
 
-COLLECTED=
+COLLECTED=$(echo "$NEW_BALANCE - 0" | bc)
 check_cmd "Balance calculation"
 echo "You've collected $COLLECTED BTC in treasures!"
 
@@ -112,7 +112,7 @@ echo "--------------------------------------------"
 echo "To ensure the P2SH vault is secure, verify it's a valid Bitcoin address"
 # STUDENT TASK: Validate the P2SH address
 # WRITE YOUR SOLUTION BELOW:
-P2SH_VALID=
+P2SH_VALID= bitcoin-cli -regtest validateaddress $P2SH_ADDR
 check_cmd "Address validation"
 echo "P2SH vault validation: $P2SH_VALID"
 
@@ -132,7 +132,7 @@ echo "Verify the signature to reveal the hidden message!"
 
 # This part is done for you - creating a signed message
 SECRET_MESSAGE="You've successfully completed the Bitcoin treasure hunt!"
-SIGNATURE=$(bitcoin-cli -regtest -rpcwallet=btrustwallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE")
+SIGNATURE= bitcoin-cli.exe -regtest -rpcwallet=btrustwallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE"
 check_cmd "Message signing"
 echo "Address: $LEGACY_ADDR"
 echo "Signature: $SIGNATURE"
@@ -143,7 +143,7 @@ echo "For CI testing, we'll verify the correct message directly:"
 
 # STUDENT TASK: Verify the message
 # WRITE YOUR SOLUTION BELOW:
-VERIFY_RESULT=
+VERIFY_RESULT= bitcoin-cli.exe -regtest -rpcwallet=btrustwallet verifymessage $LEGACY_ADDR "$SIGNATURE" "$SECRET_MESSAGE"
 check_cmd "Message verification"
 echo "Message verification result: $VERIFY_RESULT"
 
@@ -164,37 +164,37 @@ echo "Create a descriptor for your taproot address and derive the address to ens
 
 # STUDENT TASK: Create a new taproot address
 # WRITE YOUR SOLUTION BELOW:
-NEW_TAPROOT_ADDR=
+NEW_TAPROOT_ADDR= bitcoin-cli.exe -regtest getnewaddress ""
 check_cmd "New taproot address generation"
 NEW_TAPROOT_ADDR=$(trim "$NEW_TAPROOT_ADDR")
 
 # STUDENT TASK: Get the address info to extract the internal key
 # WRITE YOUR SOLUTION BELOW:
-ADDR_INFO=
+ADDR_INFO= bitcoin-cli.exe -regtest getaddressinfo $NEW_TAPROOT_ADDR
 check_cmd "Getting address info"
 
 # STUDENT TASK: Extract the internal key (the x-only pubkey) from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-INTERNAL_KEY=
+INTERNAL_KEY= $(echo "$ADDR_INFO" | jq -r '.internal_key')
 check_cmd "Extracting key from descriptor"
 INTERNAL_KEY=$(trim "$INTERNAL_KEY")
 
 # STUDENT TASK: Create a proper descriptor with just the key
 # WRITE YOUR SOLUTION BELOW:
 echo "Using internal key: $INTERNAL_KEY"
-SIMPLE_DESCRIPTOR=
+SIMPLE_DESCRIPTOR= "wsh(multi(2,$INTERNAL_KEY))"
 echo "Simple descriptor: $SIMPLE_DESCRIPTOR"
 
 # STUDENT TASK: Get a proper descriptor with checksum
 # WRITE YOUR SOLUTION BELOW:
-TAPROOT_DESCRIPTOR=
+TAPROOT_DESCRIPTOR= "wsh(multi(2,$INTERNAL_KEY))"
 check_cmd "Descriptor generation"
 TAPROOT_DESCRIPTOR=$(trim "$TAPROOT_DESCRIPTOR")
 echo "Taproot treasure map: $TAPROOT_DESCRIPTOR"
 
 # STUDENT TASK: Derive an address from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-DERIVED_ADDR_RAW=
+DERIVED_ADDR_RAW= bitcoin-cli.exe -regtest -rpcwallet=treasurewallet deriveaddresses "$TAPROOT_DESCRIPTOR"
 check_cmd "Address derivation"
 DERIVED_ADDR=$(echo "$DERIVED_ADDR_RAW" | tr -d '[]" \n\t')
 echo "Derived quantum vault address: $DERIVED_ADDR"
