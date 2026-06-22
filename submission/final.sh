@@ -143,7 +143,7 @@ echo "For CI testing, we'll verify the correct message directly:"
 
 # STUDENT TASK: Verify the message
 # WRITE YOUR SOLUTION BELOW:
-VERIFY_RESULT= bitcoin-cli -regtest -rpcwallet=btrustwallet verifymessage $LEGACY_ADDR "$SIGNATURE" "$SECRET_MESSAGE"
+VERIFY_RESULT=$(bitcoin-cli -regtest -rpcwallet=btrustwallet verifymessage "$LEGACY_ADDR" "$SIGNATURE" "$SECRET_MESSAGE")
 check_cmd "Message verification"
 echo "Message verification result: $VERIFY_RESULT"
 
@@ -194,7 +194,7 @@ echo "Taproot treasure map: $TAPROOT_DESCRIPTOR"
 
 # STUDENT TASK: Derive an address from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-DERIVED_ADDR_RAW= bitcoin-cli -regtest -rpcwallet=treasurewallet deriveaddresses "$TAPROOT_DESCRIPTOR"
+DERIVED_ADDR_RAW=$(bitcoin-cli -regtest -rpcwallet=treasurewallet deriveaddresses "$TAPROOT_DESCRIPTOR")
 check_cmd "Address derivation"
 DERIVED_ADDR=$(echo "$DERIVED_ADDR_RAW" | tr -d '[]" \n\t')
 echo "Derived quantum vault address: $DERIVED_ADDR"
