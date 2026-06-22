@@ -22,7 +22,7 @@ echo "----------------------------------------"
 echo "Create a wallet named 'btrustwallet' to track your Bitcoin exploration"
 # STUDENT TASK: Use bitcoin-cli to create a wallet named "btrustwallet"
 # WRITE YOUR SOLUTION BELOW:
-
+bitcoin-cli -regtest createwallet btrustwallet
 
 # Create a second wallet that will hold the treasure
 echo "Now, create another wallet called 'treasurewallet' to fund your adventure"
@@ -33,7 +33,7 @@ bitcoin-cli -regtest createwallet treasurewallet
 # Generate an address for mining in the treasure wallet
 # STUDENT TASK: Generate a new address in the treasurewallet
 # WRITE YOUR SOLUTION BELOW:
-TREASURE_ADDR= bitcoin-cli -regtest -rpcwallet=treasurewallet getnewaddress ""
+TREASURE_ADDR=$(bitcoin-cli -regtest -rpcwallet=treasurewallet getnewaddress "")
 check_cmd "Address generation"
 echo "Mining to address: $TREASURE_ADDR"
 
@@ -47,7 +47,7 @@ echo "-----------------------------------------"
 echo "Check your wallet balance to see what resources you have to start"
 # STUDENT TASK: Get the balance of btrustwallet
 # WRITE YOUR SOLUTION BELOW:
-BALANCE= bitcoin-cli -regtest -rpcwallet=btrustwallet getbalance ""
+BALANCE=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getbalance "")
 check_cmd "Balance check"
 echo "Your starting balance: $BALANCE BTC"
 
@@ -97,7 +97,7 @@ echo "-------------------------------"
 echo "Treasures have been sent to your addresses. Check how much you've collected!"
 # STUDENT TASK: Check wallet balance after receiving funds and calculate how much treasure was collected
 # WRITE YOUR SOLUTION BELOW:
-NEW_BALANCE= bitcoin-cli -regtest -rpcwallet=treasurewallet getbalance ""
+NEW_BALANCE=$(bitcoin-cli -regtest -rpcwallet=treasurewallet getbalance "")
 check_cmd "New balance check"
 echo "Your treasure balance: $NEW_BALANCE BTC"
 
@@ -132,7 +132,7 @@ echo "Verify the signature to reveal the hidden message!"
 
 # This part is done for you - creating a signed message
 SECRET_MESSAGE="You've successfully completed the Bitcoin treasure hunt!"
-SIGNATURE= bitcoin-cli -regtest -rpcwallet=btrustwallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE"
+SIGNATURE=$(bitcoin-cli -regtest -rpcwallet=btrustwallet signmessage $LEGACY_ADDR "$SECRET_MESSAGE")
 check_cmd "Message signing"
 echo "Address: $LEGACY_ADDR"
 echo "Signature: $SIGNATURE"
@@ -164,18 +164,18 @@ echo "Create a descriptor for your taproot address and derive the address to ens
 
 # STUDENT TASK: Create a new taproot address
 # WRITE YOUR SOLUTION BELOW:
-NEW_TAPROOT_ADDR= bitcoin-cli -regtest getnewaddress ""
+NEW_TAPROOT_ADDR=$(bitcoin-cli -regtest getnewaddress "" bech32m)
 check_cmd "New taproot address generation"
 NEW_TAPROOT_ADDR=$(trim "$NEW_TAPROOT_ADDR")
 
 # STUDENT TASK: Get the address info to extract the internal key
 # WRITE YOUR SOLUTION BELOW:
-ADDR_INFO= bitcoin-cli -regtest getaddressinfo $NEW_TAPROOT_ADDR
+ADDR_INFO=$(bitcoin-cli -regtest getaddressinfo $NEW_TAPROOT_ADDR)
 check_cmd "Getting address info"
 
 # STUDENT TASK: Extract the internal key (the x-only pubkey) from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-INTERNAL_KEY= $(echo "$ADDR_INFO" | jq -r '.internal_key')
+INTERNAL_KEY=$(echo "$ADDR_INFO" | jq -r '.internal_key')
 check_cmd "Extracting key from descriptor"
 INTERNAL_KEY=$(trim "$INTERNAL_KEY")
 
