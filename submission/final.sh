@@ -182,12 +182,12 @@ INTERNAL_KEY=$(trim "$INTERNAL_KEY")
 # STUDENT TASK: Create a proper descriptor with just the key
 # WRITE YOUR SOLUTION BELOW:
 echo "Using internal key: $INTERNAL_KEY"
-SIMPLE_DESCRIPTOR= "wsh(multi(2,$INTERNAL_KEY))"
+SIMPLE_DESCRIPTOR="wsh(multi(2,$INTERNAL_KEY))"
 echo "Simple descriptor: $SIMPLE_DESCRIPTOR"
 
 # STUDENT TASK: Get a proper descriptor with checksum
 # WRITE YOUR SOLUTION BELOW:
-TAPROOT_DESCRIPTOR= "wsh(multi(2,$INTERNAL_KEY))"
+TAPROOT_DESCRIPTOR="wsh(multi(2,$INTERNAL_KEY))"
 check_cmd "Descriptor generation"
 TAPROOT_DESCRIPTOR=$(trim "$TAPROOT_DESCRIPTOR")
 echo "Taproot treasure map: $TAPROOT_DESCRIPTOR"
