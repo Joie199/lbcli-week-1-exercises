@@ -97,7 +97,7 @@ echo "-------------------------------"
 echo "Treasures have been sent to your addresses. Check how much you've collected!"
 # STUDENT TASK: Check wallet balance after receiving funds and calculate how much treasure was collected
 # WRITE YOUR SOLUTION BELOW:
-NEW_BALANCE=$(bitcoin-cli -regtest -rpcwallet=treasurewallet getbalance "")
+NEW_BALANCE=$(bitcoin-cli -regtest -rpcwallet=treasurewallet getbalance "*")
 check_cmd "New balance check"
 echo "Your treasure balance: $NEW_BALANCE BTC"
 
@@ -164,13 +164,13 @@ echo "Create a descriptor for your taproot address and derive the address to ens
 
 # STUDENT TASK: Create a new taproot address
 # WRITE YOUR SOLUTION BELOW:
-NEW_TAPROOT_ADDR=$(bitcoin-cli -regtest getnewaddress "" bech32m)
+NEW_TAPROOT_ADDR=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getnewaddress "" bech32m)
 check_cmd "New taproot address generation"
 NEW_TAPROOT_ADDR=$(trim "$NEW_TAPROOT_ADDR")
 
 # STUDENT TASK: Get the address info to extract the internal key
 # WRITE YOUR SOLUTION BELOW:
-ADDR_INFO=$(bitcoin-cli -regtest getaddressinfo $NEW_TAPROOT_ADDR)
+ADDR_INFO=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getaddressinfo $NEW_TAPROOT_ADDR)
 check_cmd "Getting address info"
 
 # STUDENT TASK: Extract the internal key (the x-only pubkey) from the descriptor
