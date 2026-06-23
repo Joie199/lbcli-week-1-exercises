@@ -187,16 +187,16 @@ echo "Simple descriptor: $SIMPLE_DESCRIPTOR"
 
 # STUDENT TASK: Get a proper descriptor with checksum
 # WRITE YOUR SOLUTION BELOW:
-TAPROOT_DESCRIPTOR="wsh(multi(2,$INTERNAL_KEY))"
+TAPROOT_DESCRIPTOR=$(echo "$ADDR_INFO" | jq -r '.desc')
 check_cmd "Descriptor generation"
 TAPROOT_DESCRIPTOR=$(trim "$TAPROOT_DESCRIPTOR")
 echo "Taproot treasure map: $TAPROOT_DESCRIPTOR"
 
 # STUDENT TASK: Derive an address from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-DERIVED_ADDR_RAW=$(bitcoin-cli -regtest -rpcwallet=treasurewallet deriveaddresses "$TAPROOT_DESCRIPTOR")
+DERIVED_ADDR_RAW=$(bitcoin-cli -regtest deriveaddresses "$TAPROOT_DESCRIPTOR")
 check_cmd "Address derivation"
-DERIVED_ADDR=$(echo "$DERIVED_ADDR_RAW" | tr -d '[]" \n\t')
+DERIVED_ADDR=$(echo "$DERIVED_ADDR_RAW" | jq -r '.[0]')
 echo "Derived quantum vault address: $DERIVED_ADDR"
 
 # Verify the addresses match
