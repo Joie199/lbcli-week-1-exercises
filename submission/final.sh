@@ -104,6 +104,7 @@ echo "Your treasure balance: $NEW_BALANCE BTC"
 COLLECTED=$(echo "$NEW_BALANCE - $BALANCE" | bc)
 check_cmd "Balance calculation"
 echo "You've collected $COLLECTED BTC in treasures!"
+echo "::notice::COLLECTED=$COLLECTED"
 
 # CHALLENGE PART 5: Verify that one of your addresses is valid
 echo ""
